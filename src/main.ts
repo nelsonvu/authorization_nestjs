@@ -9,6 +9,6 @@ async function bootstrap() {
     bufferLogs: true
   });
   app.useLogger(app.get(CustomLogger));
-  await app.listen(3000);
+  await app.listen(process.env.PORT);
 }
 bootstrap();
