@@ -6,14 +6,12 @@ import User from 'src/entities/user.entity';
 import { UsersService } from '../../user/users.service';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { IsEmail } from 'class-validator';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
     constructor(
         private authService: AuthService,
-        private readonly usersService: UsersService,
-        private readonly jwtService: JwtService,
-        private readonly configService: ConfigService
     ) {
         super({
             usernameField: 'email'
