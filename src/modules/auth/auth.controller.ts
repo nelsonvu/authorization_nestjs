@@ -25,7 +25,6 @@ export class AuthController {
         private readonly jwtService: JwtService,
         private readonly configService: ConfigService
     ) {
-        this.authService = new AuthService(usersService, jwtService, configService)
     }
 
     @Post('register')

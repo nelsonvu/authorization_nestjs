@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Inject } from "@nestjs/common";
+import { HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
 import { UsersService } from "../user/users.service";
 import { RegisterDto } from "./dto/register.dto";
 import { ConfigService } from "@nestjs/config";
@@ -7,15 +7,13 @@ import { PostgresErrorCode } from '../database/postgresErrorCodes.enum'
 import User from "src/entities/user.entity";
 const bcrypt = require('bcrypt')
 
+@Injectable()
 export class AuthService {
     constructor(
         private readonly usersService: UsersService,
         private readonly jwtService: JwtService,
         private readonly configService: ConfigService
     ) { 
-        this.usersService = usersService
-        this.jwtService = jwtService
-        this.configService = configService
     }
 
     public async register(registrationData: RegisterDto) {

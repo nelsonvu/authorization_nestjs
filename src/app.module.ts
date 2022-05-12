@@ -1,5 +1,4 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { CatsModule } from './modules/cat/cats.module';
 import LoggerMiddleware from './configs/middlewares/logger.middleware';
 import { DatabaseModule } from './modules/database/database.module';
 import { LoggerModule } from './modules/log/logs.module';
@@ -12,7 +11,6 @@ import { UsersModule } from './modules/user/users.module';
 
 @Module({
   imports: [
-    CatsModule,
     LoggerModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
