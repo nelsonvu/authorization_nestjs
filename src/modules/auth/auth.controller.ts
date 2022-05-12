@@ -1,4 +1,4 @@
-import { Body, Req, Controller, HttpCode, Post, UseGuards, Res, HttpStatus } from '@nestjs/common';
+import { Body, Req, Controller, HttpCode, Post, UseGuards, Res, HttpStatus, SerializeOptions, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
@@ -34,16 +34,15 @@ export class AuthController {
 
     @HttpCode(200)
     @Post('login')
-    async logIn(@Res() response: Response, @Body() loginData: LoginDto) {
+    async logIn(@Req() request, @Body() loginData: LoginDto) {
         const { email, password } = loginData;
 
         let user = await this.authService.getAuthenticatedUser(email, password);
         const token = await this.authService.getJwtToken(user.id);
 
-        response.cookie("Authentication", token)
-        user.password = undefined;
-
-        response.status(200).send(user)
+        request.res.cookie("Authentication", token)
+        
+        return user
     }
 
     @HttpCode(200)
@@ -52,6 +51,6 @@ export class AuthController {
     async logOut(@Res() response: Response) {
         response.cookie("Authentication", null)
 
-        return response.sendStatus(200);
+        response.sendStatus(200);
     }
 }
