@@ -8,8 +8,16 @@ import * as Joi from '@hapi/joi';
 import { AuthModuleOptions } from '@nestjs/passport';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/user/users.module';
+import { APP_FILTER } from '@nestjs/core';
+import { AllExceptionsFilter } from './configs/decorators/catchError';
 
 @Module({
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
+  ],
   imports: [
     LoggerModule,
     ConfigModule.forRoot({

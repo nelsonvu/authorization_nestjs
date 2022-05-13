@@ -15,7 +15,7 @@ class CustomLogger extends ConsoleLogger {
     logsService: LogsService
   ) {
     const environment = configService.get('NODE_ENV');
- 
+    
     super(
       context,
       {
@@ -38,7 +38,6 @@ class CustomLogger extends ConsoleLogger {
   }
   error(message: string, stack?: string, context?: string) {
     super.error.apply(this, [message, stack, context]);
- 
     this.logsService.createLog({
       message,
       context,

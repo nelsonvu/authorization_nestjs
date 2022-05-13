@@ -1,8 +1,9 @@
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
-import { NestFactory, Reflector } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
+import { AllExceptionsFilter } from './configs/decorators/catchError';
 import CustomLogger from './modules/log/customLogger';
 import getLogLevels from './utils/getLogLevels';
 
@@ -23,6 +24,9 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ClassSerializerInterceptor(
     app.get(Reflector))
   );
+  
+  const httpAdapter = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
   
   await app.listen(process.env.PORT);
 }

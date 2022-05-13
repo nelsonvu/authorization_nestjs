@@ -1,3 +1,4 @@
+import { IsOptional } from 'class-validator';
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
  
 @Entity('logs')
@@ -5,7 +6,7 @@ class Log {
   @PrimaryGeneratedColumn()
   public id: number;
  
-  @Column()
+  @Column({nullable: true})
   public context: string;
  
   @Column()
