@@ -10,6 +10,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/user/users.module';
 import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from './configs/decorators/catchError';
+import { ProductModule } from './modules/product/product.module';
 
 @Module({
   providers: [
@@ -39,7 +40,8 @@ import { AllExceptionsFilter } from './configs/decorators/catchError';
     }),
     DatabaseModule,
     AuthModule,
-    UsersModule
+    UsersModule,
+    ProductModule
   ],
 })
 export class AppModule {
