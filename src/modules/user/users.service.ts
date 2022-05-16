@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import Address from 'src/entities/address.entity';
-import { Repository } from 'typeorm';
+import Role, { Roles } from 'src/entities/role.entity';
+import { In, Repository } from 'typeorm';
 import User from '../../entities/user.entity';
-import { CreateUserDto } from './dto/createUser.dto';
+import CreateUserDto from './dto/createUser.dto';
 import UpdateUserDto from './dto/updateUser.dto';
 const bcrypt = require('bcrypt')
  
@@ -14,12 +15,15 @@ export class UsersService {
     private usersRepository: Repository<User>,
 
     @InjectRepository(Address)
-    private addresesRepository: Repository<Address>
+    private addresesRepository: Repository<Address>,
+
+    @InjectRepository(Role)
+    private roleRepository: Repository<Role>
   ) {
   }
  
   async getByEmail(email: string) {
-    const user = await this.usersRepository.findOne({ where: {email} });
+    const user = await this.usersRepository.findOne({ where: {email}, relations: ["roles"] });
     if (user) {
       return user;
     }
@@ -35,13 +39,36 @@ export class UsersService {
   }
 
   public async createUser(userData: CreateUserDto) {
-    const newUser = await this.usersRepository.create(userData);
+    const { email, name, password, roles} = userData
+
+    const newUser = new User();
+    newUser.email = email
+    newUser.name = name
+    newUser.password = password
+
+    let roleEntities = []
+    if (roles.length > 0) {
+      roleEntities = await this.roleRepository.find({ 
+        where: { 
+          name: In(roles)
+        }
+      })
+    } else {
+      let role = await this.roleRepository.find({ 
+        where: { 
+          name: Roles.MEMBER
+        }
+      })
+      roleEntities.push(role)
+    }
+    
+    newUser.roles = roleEntities
+
     await this.usersRepository.save(newUser);
     return newUser;
   }
 
   public async updateUserById(userId: number, userData: UpdateUserDto) {
-    console.log(userData, userId)
     let user = await this.getById(userId)
 
     if (!user.address?.id) {

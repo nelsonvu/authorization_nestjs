@@ -1,18 +1,19 @@
 import { Exclude } from 'class-transformer';
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import Address from './address.entity';
- 
+import Role from './role.entity';
+
 @Entity()
 class User {
   @PrimaryGeneratedColumn()
   public id?: number;
- 
+
   @Column({ unique: true })
   public email: string;
- 
+
   @Column()
   public name: string;
- 
+
   @Column()
   @Exclude()
   public password: string;
@@ -29,6 +30,20 @@ class User {
   })
   @JoinColumn()
   public address: Address;
+
+  @ManyToMany(() => Role)
+  @JoinTable({
+    name: "user_roles", // table name for the junction table of this relation
+    joinColumn: {
+      name: "user",
+      referencedColumnName: "id"
+    },
+    inverseJoinColumn: {
+      name: "role",
+      referencedColumnName: "id"
+    }
+  })
+  roles: Role[];
 }
- 
+
 export default User;
