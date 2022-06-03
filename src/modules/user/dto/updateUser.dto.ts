@@ -1,25 +1,38 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsEmail, IsString, IsNotEmpty, MinLength, IsObject, ValidateNested, IsOptional } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  IsNotEmpty,
+  MinLength,
+  IsObject,
+  ValidateNested,
+  IsOptional,
+} from 'class-validator';
 
 class AddressDto {
-    @IsString()
-    @IsOptional()
-    public street: string;
-   
-    @IsString()
-    @IsOptional()
-    public city: string;
-   
-    @IsString()
-    @IsOptional()
-    public country: string;
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  public street: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  public city: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiProperty()
+  public country: string;
 }
 
 export class UpdateUserDto {
-    @IsObject()
-    @ValidateNested()
-    @Type(() => AddressDto)
-    address: AddressDto;
+  @IsObject()
+  @ValidateNested()
+  @Type(() => AddressDto)
+  @ApiProperty()
+  address: AddressDto;
 }
- 
+
 export default UpdateUserDto;

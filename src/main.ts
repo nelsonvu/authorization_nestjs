@@ -1,5 +1,6 @@
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { HttpAdapterHost, NestFactory, Reflector } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 
 import { AppModule } from './app.module';
@@ -8,9 +9,10 @@ import CustomLogger from './modules/log/customLogger';
 import getLogLevels from './utils/getLogLevels';
 
 async function bootstrap() {
+  // Logger
   const app = await NestFactory.create(AppModule, {
     logger: getLogLevels(process.env.NODE_ENV === 'production'),
-    bufferLogs: true
+    bufferLogs: true,
   });
   app.useLogger(app.get(CustomLogger));
 
@@ -21,13 +23,22 @@ async function bootstrap() {
   );
   app.use(cookieParser());
 
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(
-    app.get(Reflector))
-  );
-  
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+
+  // Catch exception
   const httpAdapter = app.get(HttpAdapterHost);
   app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
-  
+
+  // Swagger
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('API with NestJS')
+    .setDescription('API developed throughout the API with NestJS course')
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api', app, document);
+
   await app.listen(process.env.PORT);
 }
 bootstrap();
