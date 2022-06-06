@@ -4,7 +4,8 @@ import { RegisterDto } from './dto/register.dto';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PostgresErrorCode } from '../database/postgresErrorCodes.enum';
-import bcrypt from 'bcrypt';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const bcrypt = require('bcrypt');
 
 @Injectable()
 export class AuthService {

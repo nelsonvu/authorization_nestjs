@@ -38,6 +38,7 @@ class User {
   @OneToOne(() => Address, {
     eager: true,
     cascade: true,
+    nullable: true,
   })
   @JoinColumn()
   public address: Address;
