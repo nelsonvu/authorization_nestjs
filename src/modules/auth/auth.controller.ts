@@ -11,6 +11,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
+import { ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 // Service
 import { UsersService } from '../user/users.service';
@@ -18,13 +19,14 @@ import { AuthService } from './auth.service';
 
 // Dto
 import { RegisterDto } from './dto/register.dto';
+import LoginDto from './dto/login.dto';
 
 // Guard
 import JwtAuthGuard from './guard/jwtAuth.guard';
-import LoginDto from './dto/login.dto';
 import JwtRefreshGuard from './guard/jwtRefresh.guard';
-import { ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import User from 'src/entities/user.entity';
+
+// Entity
+import User from '../../entities/user.entity';
 
 @Controller('auth')
 @ApiTags('Auth')

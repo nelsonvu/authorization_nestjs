@@ -1,12 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import Address from 'src/entities/address.entity';
-import Role, { Roles } from 'src/entities/role.entity';
 import { In, Repository } from 'typeorm';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const bcrypt = require('bcrypt');
+
+// Entity
+import Address from '../../entities/address.entity';
 import User from '../../entities/user.entity';
+import Role, { Roles } from '../../entities/role.entity';
+
+// Dto
 import CreateUserDto from './dto/createUser.dto';
 import UpdateUserDto from './dto/updateUser.dto';
-import bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -18,7 +23,7 @@ export class UsersService {
     private addresesRepository: Repository<Address>,
 
     @InjectRepository(Role)
-    private roleRepository: Repository<Role>,
+    private rolesRepository: Repository<Role>,
   ) {}
 
   async getByEmail(email: string) {
@@ -56,13 +61,13 @@ export class UsersService {
 
     let roleEntities = [];
     if (roles.length > 0) {
-      roleEntities = await this.roleRepository.find({
+      roleEntities = await this.rolesRepository.find({
         where: {
           name: In(roles),
         },
       });
     } else {
-      const role = await this.roleRepository.find({
+      const role = await this.rolesRepository.find({
         where: {
           name: Roles.MEMBER,
         },

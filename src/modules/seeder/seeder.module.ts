@@ -2,11 +2,16 @@ import * as Joi from '@hapi/joi';
 import { Logger, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import Address from 'src/entities/address.entity';
-import Role from 'src/entities/role.entity';
-import User from 'src/entities/user.entity';
+
+// Module
 import { DatabaseModule } from '../database/database.module';
+// Service
 import { SeederService } from './seeder.service';
+
+// Entity
+import Role from '../../entities/role.entity';
+import User from '../../entities/user.entity';
+import Address from '../../entities/address.entity';
 
 @Module({
   imports: [

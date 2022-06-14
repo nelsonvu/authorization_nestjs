@@ -1,13 +1,9 @@
 import {
   Body,
-  Catch,
   Controller,
   Get,
-  HttpException,
-  HttpStatus,
   Param,
   Patch,
-  Post,
   Query,
   Req,
   UseFilters,
@@ -15,9 +11,17 @@ import {
 } from '@nestjs/common';
 import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AllExceptionsFilter } from 'src/configs/decorators/catchError';
-import User from 'src/entities/user.entity';
+
+// Entity
+import User from '../../entities/user.entity';
+
+// Guard
 import JwtAuthGuard from '../auth/guard/jwtAuth.guard';
+
+// Dto
 import UpdateUserDto from './dto/updateUser.dto';
+
+// Service
 import { UsersService } from './users.service';
 
 @Controller('user')

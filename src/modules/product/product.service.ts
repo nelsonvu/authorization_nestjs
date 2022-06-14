@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { InjectRepository } from '@nestjs/typeorm';
-import Product from 'src/entities/product.entity';
 import { In, Repository } from 'typeorm';
+
+// Entity
+import Product from '../../entities/product.entity';
 
 @Injectable()
 export class ProductService {
@@ -27,7 +29,6 @@ export class ProductService {
   }
 
   async search(text: string) {
-    console.log('7777777777777777777777');
     const data = await this.elasticsearchService.search<ProductSearchResult>({
       index: this.index,
       body: {
@@ -39,7 +40,6 @@ export class ProductService {
         },
       },
     });
-    console.log('data', data);
     const hits = data.hits.hits;
     const results = hits.map((item) => item._source);
 

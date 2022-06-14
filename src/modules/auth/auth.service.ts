@@ -1,11 +1,15 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { UsersService } from '../user/users.service';
-import { RegisterDto } from './dto/register.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PostgresErrorCode } from '../database/postgresErrorCodes.enum';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bcrypt = require('bcrypt');
+
+// Service
+import { UsersService } from '../user/users.service';
+
+// Dto
+import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {

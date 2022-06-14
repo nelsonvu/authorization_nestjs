@@ -7,7 +7,7 @@ import {
   IsArray,
   IsEnum,
 } from 'class-validator';
-import { Roles } from 'src/entities/role.entity';
+import { Roles } from '../../../entities/role.entity';
 
 export class RegisterDto {
   @IsEmail()
