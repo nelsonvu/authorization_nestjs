@@ -8,7 +8,6 @@ const bcrypt = require('bcrypt');
 // Entity
 import Role from 'src/entities/role.entity';
 import User from 'src/entities/user.entity';
-import Address from 'src/entities/address.entity';
 
 @Injectable()
 export class SeederService {
@@ -20,9 +19,6 @@ export class SeederService {
 
     @InjectRepository(User)
     private userRepo: Repository<User>,
-
-    @InjectRepository(Address)
-    private addressRepo: Repository<Address>,
   ) {}
 
   async seed() {
@@ -33,8 +29,6 @@ export class SeederService {
     try {
       // Delete all role
       await this.roleRepo.delete({});
-      // Delete all address
-      await this.addressRepo.delete({});
       // Detele all user
       await this.userRepo.delete({});
 
@@ -62,7 +56,6 @@ export class SeederService {
         user.email = faker.internet.email();
         user.roles = [role];
         user.password = hashedPassword;
-        user.address = null;
 
         users.push(this.userRepo.save(user));
       });

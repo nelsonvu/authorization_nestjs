@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import Address from 'src/entities/address.entity';
 import Role, { Roles } from 'src/entities/role.entity';
 import { In, Repository } from 'typeorm';
 import User from '../../entities/user.entity';
@@ -13,9 +12,6 @@ export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-
-    @InjectRepository(Address)
-    private addresesRepository: Repository<Address>,
 
     @InjectRepository(Role)
     private roleRepository: Repository<Role>,
@@ -79,23 +75,13 @@ export class UsersService {
   public async updateUserById(userId: number, userData: UpdateUserDto) {
     let user = await this.getById(userId);
 
-    if (!user.address?.id) {
-      const address = await this.addresesRepository.save(userData.address);
-      await this.usersRepository.update(
-        {
-          id: userId,
-        },
-        {
-          address: address,
-        },
-      );
-      user = await this.getById(userId);
-    } else {
-      await this.addresesRepository.update(
-        { id: user.address.id },
-        userData.address,
-      );
-    }
+    await this.usersRepository.update(
+      {
+        id: userId,
+      },
+      {},
+    );
+    user = await this.getById(userId);
 
     return user;
   }

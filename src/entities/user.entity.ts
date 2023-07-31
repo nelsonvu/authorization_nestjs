@@ -9,7 +9,6 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import Address from './address.entity';
 import Role from './role.entity';
 
 @Entity()
@@ -34,14 +33,6 @@ class User {
   })
   @Exclude()
   public currentHashedRefreshToken?: string;
-
-  @OneToOne(() => Address, {
-    eager: true,
-    cascade: true,
-    nullable: true,
-  })
-  @JoinColumn()
-  public address: Address;
 
   @ManyToMany(() => Role)
   @JoinTable({
